@@ -32,6 +32,9 @@ class Report
     #[ORM\ManyToOne(inversedBy: 'owner_id')]
     private ?Project $project = null;
 
+    #[ORM\ManyToOne(inversedBy: 'user_report')]
+    private ?User $report_user = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -107,6 +110,18 @@ class Report
     public function setProject(?Project $project): static
     {
         $this->project = $project;
+
+        return $this;
+    }
+
+    public function getReportUser(): ?User
+    {
+        return $this->report_user;
+    }
+
+    public function setReportUser(?User $report_user): static
+    {
+        $this->report_user = $report_user;
 
         return $this;
     }

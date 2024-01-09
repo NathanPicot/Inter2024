@@ -78,4 +78,22 @@ class ReportController extends AbstractController
 
         return $this->redirectToRoute('app_report_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    #[Route("/user/report", name: "user_report")]
+    public function getUserReports(ReportRepository $reportRepository): Response
+    {
+        
+        $user = $this->getUser();
+
+        if (!$user instanceof UserController) {
+           
+            return $this->redirectToRoute('login');
+        }
+
+        $userReport = $reportRepository->findBy(['userReport' => $user]);
+
+        return $this->render('report/user_report.html.twig', [
+            'userReport' => $userReport,
+        ]);
+    }
 }
