@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Report index{% endblock %}
+
+{% block body %}
+    <h1>Report index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Analysis</th>
+                <th>Nb_error</th>
+                <th>Analysis_date</th>
+                <th>Modification_date</th>
+                <th>Comment</th>
+                <th>Num_project</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for report in reports %}
+            <tr>
+                <td>{{ report.id }}</td>
+                <td>{{ report.analysis }}</td>
+                <td>{{ report.nbError }}</td>
+                <td>{{ report.analysisDate ? report.analysisDate|date('H:i:s') : '' }}</td>
+                <td>{{ report.modificationDate ? report.modificationDate|date('H:i:s') : '' }}</td>
+                <td>{{ report.comment }}</td>
+                <td>{{ report.numProject }}</td>
+                <td>
+                    <a href="{{ path('app_report_show', {'id': report.id}) }}">show</a>
+                    <a href="{{ path('app_report_edit', {'id': report.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_report_new') }}">Create new</a>
+{% endblock %}
