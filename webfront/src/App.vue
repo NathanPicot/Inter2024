@@ -1,21 +1,23 @@
 <template>
-  <div id="app">
-    <!-- Autres éléments de votre application -->
-    <FormInscription/>
-  </div>
+  <v-app>
+    <v-main>
+      <FormInscription/>
+    </v-main>
+  </v-app>
 </template>
 
 <script>
-import FormInscription from "@/components/FormInscription.vue";  // Assurez-vous d'ajuster le chemin selon votre structure de fichiers
+import FormInscription from '@/components/FormInscription.vue'
 
 export default {
+  name: 'App',
+
   components: {
     FormInscription
   },
-  // Autres configurations...
-};
-</script>
 
-<style>
-/* Styles globaux de l'application */
-</style>
+  data: () => ({
+    //
+  }),
+}
+</script>
