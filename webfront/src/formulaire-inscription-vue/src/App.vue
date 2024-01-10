@@ -1,19 +1,19 @@
 <template>
   <v-app>
     <v-main>
-      <HelloWorld/>
+      <InscriptionForm/>
     </v-main>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import InscriptionForm from "@/components/InscriptionForm.vue";
 
 export default {
   name: 'App',
 
   components: {
-    HelloWorld,
+    InscriptionForm,
   },
 
   data: () => ({
