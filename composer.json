@@ -1,0 +1,5 @@
+{
+    "require": {
+        "insolita/unused-scanner": "^2.4"
+    }
+}

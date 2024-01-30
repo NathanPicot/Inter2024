@@ -7,6 +7,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
+use Symfony\Component\Filesystem\Filesystem;
+
 
 class GitHubRepoAnalyzerController extends AbstractController
 {
@@ -24,7 +26,7 @@ class GitHubRepoAnalyzerController extends AbstractController
         // Check if cloning was successful
         if (!$cloneProcess->isSuccessful()) {
             return $this->json([
-                'error' =>  $cloneProcess ,
+                'error' =>  'Failed to clone the GitHub repository ' ,
             ]);
         }
 
@@ -47,9 +49,19 @@ class GitHubRepoAnalyzerController extends AbstractController
             }
         }
 
-        // Delete the cloned repository
-        $deleteProcess = new Process(['rm', '-rf', $repoPath]);
-        $deleteProcess->run();
+// Delete the cloned repository
+
+// Replace forward slashes with backslashes in the repo path
+$repoPath = str_replace('/', '\\', $repoPath);
+
+// Delete the cloned repository
+$filesystem = new Filesystem();
+try {
+    $filesystem->remove($repoPath);
+} catch (\Exception $e) {
+    // Handle exception
+}
+
 
         // Return results
         return $this->json($phpFiles);
