@@ -16,36 +16,36 @@
 
           <v-text-field
               ref="username"
-              :rules="[v => !!v || 'This field is required']"
+              :rules="[v => !!v || 'Ce champ est requis !!']"
               :error-messages="errorMessages"
-              label="Username"
-              placeholder="Username"
+              label="Nom d'utilisateur"
+              placeholder="Entrez votre nom d'utilisateur"
               required
               class="custom-background"></v-text-field>
             <v-text-field
                 ref="mail"
-                :rules="[v => !!v || 'This field is required', (v) => /.+@.+\..+/.test(v) || 'E-mail must be valid']"
+                :rules="[v => !!v || 'Ce champ est requis !!', (v) => /.+@.+\..+/.test(v) || 'Le Mail doit etre valide !']"
                 :error-messages="errorMessages"
                 label="E-mail"
-                placeholder="Enter your e-mail"
+                placeholder="Entrez votre e-mail"
                 required
                 class="custom-background"
             ></v-text-field>
             <v-text-field
                 ref="verifmail"
-                :rules="[v => !!v || 'This field is required', (v) => /.+@.+\..+/.test(v) || 'E-mail must be valid']"
+                :rules="[v => !!v || 'Ce champ est requis !!', (v) => /.+@.+\..+/.test(v) || 'Le mail doit etre le meme que celui au-dessus']"
                 :error-messages="errorMessages"
-                label="Verification e-mail"
-                placeholder="Enter your e-mail"
+                label="Verification E-mail"
+                placeholder="Entrez votre E-mail"
                 required
                 class="custom-background"
             ></v-text-field>
             <v-text-field
                 ref="password"
-                :rules="[v => !!v || 'Password is required', (v) => (v && v.length >= 8) || 'Password must be at least 8 characters']"
+                :rules="[v => !!v || 'Un mot de passe est requis !', (v) => (v && v.length >= 8) || 'Le mot de passe doit avoir au moins 8 caractères !']"
                 :error-messages="errorMessages"
-                label="Password"
-                placeholder="Password"
+                label="Mot de passe"
+                placeholder="Entrez votre mot de passe"
                 required
                 type="password"
                 class="custom-background"
@@ -78,7 +78,6 @@
 
 <script>
 //import {Field} from "vee-validate";
-//import {useCounterStore} from '../store/userStore';
 export default {
   //components: {Field},
 
@@ -101,18 +100,11 @@ export default {
       this.$refs.password.value = '';
       this.errorMessages = '';
       this.formHasErrors = false;
-
-      /*Object.keys(this.form).forEach((f) => {
-        this.form[f] = '';
-      });*/
     },
-
     submit() {
       console.log(this.$refs.username.value);
       this.formHasErrors = false
 
-      //useCounterStore.increment()
-      //console.log(useCounterStore.state.count)
       Object.keys(this.form).forEach(f => {
         if (!this.form[f]) {
           this.formHasErrors = true
