@@ -15,6 +15,7 @@
         "symfony/yaml": "7.0.*"
     },
     "require-dev": {
+        "povils/phpmnd": "^3.4",
         "squizlabs/php_codesniffer": "*",
         "symfony/maker-bundle": "^1.52"
     },
