@@ -1,12 +1,12 @@
 
 <script setup>
-import { useCounterStore } from "@/stores/userStore";
+// import { useCounterStore } from "@/stores/userStore";
 import FormInscription from '@/components/FormInscription.vue'
 
 
-const store = useCounterStore();
-store.count++;
-store.increment(2);
+// const store = useCounterStore();
+// store.count++;
+// store.increment(2);
 
 // export default {
 //   name: 'App',
@@ -22,9 +22,8 @@ store.increment(2);
 <template>
   <v-app>
     <v-main>
-      <h1>count is : {{ store.count }}</h1>
-      <button @click="store.increment(1)">increment</button>
-
+<!--      <h1>count is : {{ store.count }}</h1>-->
+<!--      <button @click="store.increment(1)">increment</button>-->
       <FormInscription/>
     </v-main>
   </v-app>
