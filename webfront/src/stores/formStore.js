@@ -11,6 +11,9 @@ export const useFormStore = defineStore('form', {
         setUsername(value) {
             this.username = value;
         },
+        logUsername(username) {
+            console.log(username);
+        },
         setEmail(value) {
             this.email = value;
         },
@@ -23,4 +26,11 @@ export const useFormStore = defineStore('form', {
             this.password = '';
         },
     },
+    getters: {
+        getUsernameUpperCase() {
+            console.log(this.username);
+            return this.username.toUpperCase();
+
+        }
+    }
 });

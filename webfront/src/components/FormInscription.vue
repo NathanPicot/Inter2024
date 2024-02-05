@@ -1,5 +1,7 @@
 <!-- src/components/Form.vue -->
 <script>
+import { useFormStore } from '@/stores/formStore';
+
 export default {
   data () {
     return {
@@ -46,11 +48,9 @@ export default {
         return
       }
       else {
+        useFormStore().logUsername(this.$refs.username.value);
         console.log(this.formValid)
       }
-    },
-    isFormValid() {
-      return Object.keys(this.form).every(f => !!this.form[f]);
     },
   },
 };
@@ -70,7 +70,7 @@ export default {
           <v-card-text class="text-center">
 
             <div>
-              <h1 style="padding: 20px; margin-bottom: 20px">INSCRIPTION</h1>
+              <h1 style="padding: 20px; margin-bottom: 20px; color: white; margin-top: 20px">INSCRIPTION</h1>
             </div>
             <v-text-field
               ref="username"
@@ -79,7 +79,7 @@ export default {
               label="Nom d'utilisateur"
               placeholder="Entrez votre nom d'utilisateur"
               required
-              class="custom-background"></v-text-field>
+              class="custom-background elevation-5"></v-text-field>
             <v-text-field
                 ref="mail"
                 v-model="mail"
@@ -87,7 +87,7 @@ export default {
                 label="E-mail"
                 placeholder="Entrez votre e-mail"
                 required
-                class="custom-background"
+                class="custom-background elevation-5"
             ></v-text-field>
             <v-text-field
                 ref="password"
@@ -95,13 +95,13 @@ export default {
                 :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
                 :type="show1 ? 'text' : 'password'"
                 name="input-10-1"
-                :rules="[v => !!v || 'Un mot de passe est requis !', (v) => (v && v.length >= 8) || 'Le mot de passe doit avoir au moins 8 caractères !',rules.required, rules.min]"
+                :rules="[rules.required, rules.min]"
                 label="Mot de passe"
                 placeholder="Entrez votre mot de passe"
                 required
                 counter
                 @click:append="show1 = !show1"
-                class="custom-background"
+                class="custom-background elevation-5"
             ></v-text-field>
             <v-text-field
                 ref="verifPassword"
@@ -114,18 +114,10 @@ export default {
                 :type="show2 ? 'text' : 'password'"
                 counter
                 @click:append="show2 = !show2"
-                class="custom-background"
+                class="custom-background elevation-5"
             ></v-text-field>
         </v-card-text>
-        <v-divider class="mt-1"></v-divider>
-        <v-card-actions class="justify-center mb-5">
-          <v-btn
-              rounded="lg"
-              @click="resetForm"
-              variant="text">
-            Annuler
-          </v-btn>
-
+        <v-card-actions class="justify-center mb-8">
           <v-btn
               rounded="lg"
               color="primary"
@@ -136,9 +128,14 @@ export default {
           >
             S'inscrire
           </v-btn>
-          <!-- Utilisation de v-if pour conditionner l'affichage sur l'erreur -->
 
-
+          <v-btn
+              style="color: white"
+              rounded="lg"
+              to="/"
+              variant="text">
+            Se connecter
+          </v-btn>
         </v-card-actions>
         </v-form>
       </v-card>
@@ -151,8 +148,8 @@ export default {
 <style scoped>
 /* Styles spécifiques au composant */
 #formInscription{
-  background-color: #5480D5;
-  margin-top: 50px;
+  background-color: #022037;
+  margin-top: 80px;
   border-radius: 20px;
   padding: 5px;
 }
@@ -160,7 +157,7 @@ export default {
 .custom-background{
   background-color: white;
   //border: solid black 2px;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   border-radius: 10px;
   padding: 5px;
   width: 60%;
@@ -168,14 +165,13 @@ export default {
 
 }
 
+body {
+  overflow-y: hidden;
+  background-color: aliceblue;
+}
+
 v-btn{
   border-radius: 60px;
 }
 
-.error-text {
-  width: 100%;
-  color: red;
-  margin-top: 40px;
-  background-color: chartreuse;
-}
 </style>
