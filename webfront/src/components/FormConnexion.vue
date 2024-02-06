@@ -10,7 +10,7 @@ export default {
       show2: false,
       password: 'Password',
       rules: {
-        required: value => !!value || 'Required.',
+        required: value => !!value || 'Ce champ est requis !',
         min: v => v.length >= 8 || 'Min 8 characters',
         // verifPassword: v => this.modelPassword.value !== v || 'Les mots de passes doivent être identiques !',
       },
@@ -29,8 +29,19 @@ export default {
   },
   methods: {
     submit() {
-        console.log(this.formValid)
+      // Vérifiez si le champ username est un e-mail
+      const isEmail = /.+@.+\..+/.test(this.username);
 
+      if (isEmail) {
+        console.log('Connexion avec l\'e-mail:', this.username);
+        // Traitez la connexion par e-mail
+      } else {
+        console.log('Connexion avec le nom d\'utilisateur:', this.username);
+        // Traitez la connexion par nom d'utilisateur
+      }
+
+      console.log('Mot de passe:', this.modelPassword);
+      console.log('Form Valide:', this.formValid);
     },
   },
 };
@@ -45,7 +56,7 @@ export default {
         md="8"
         lg="6"
     >
-      <v-card ref="form" id="formInscription">
+      <v-card ref="form" id="formConnexion">
         <v-form v-model="formValid">
           <v-card-text class="text-center">
 
@@ -55,7 +66,7 @@ export default {
             <v-text-field
                 ref="username"
                 v-model="username"
-                :rules="[v => !!v || 'Ce champ est requis !!']"
+                :rules="[v => !!v || 'Ce champ est requis !']"
                 label="Nom d'utilisateur ou E-mail"
                 placeholder="Entrez votre nom d'utilisateur ou E-mail"
                 required
@@ -105,7 +116,7 @@ export default {
 
 <style scoped>
 /* Styles spécifiques au composant */
-#formInscription{
+#formConnexion{
   background-color: #022037;
   margin-top: 80px;
   border-radius: 20px;
