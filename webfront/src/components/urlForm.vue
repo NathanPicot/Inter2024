@@ -2,6 +2,36 @@
 
 <template>
   <v-row justify="center">
+    <v-col>
+      <v-menu>
+        <template v-slot:activator="{ props }">
+          <v-icon size="64" class="ma-8" v-bind="props">mdi-account-circle</v-icon>
+        </template>
+        <v-list>
+          <v-list-subheader>MENU</v-list-subheader>
+          <v-list-item 
+            prepend-icon="mdi-account"
+            to="/FormChangeInfos"
+          >
+            Mon compte
+          </v-list-item>
+          <v-list-item 
+            prepend-icon="mdi-archive"
+            to="/Mes Projets"
+          >
+            Mes projets
+          </v-list-item>
+          <v-list-item
+            prepend-icon="mdi-arrow-left-bold"
+            to="/"
+          >
+            Se déconnecter
+          </v-list-item>
+        </v-list>
+      </v-menu>
+    </v-col>
+  </v-row>
+  <v-row justify="center">
     <v-col
         cols="12"
         sm="10"
@@ -48,6 +78,7 @@
               variant="text"
               :disabled="!formValid"
               @click="submit"
+              :loading="loading" 
           >
             Analyser
           </v-btn>
@@ -86,6 +117,8 @@ export default {
         { toolName: 'PhpDepreciationDetector', toolType: 'Détection des fonctions dépréciées' },
         { toolName: 'phpMetrics', toolType: 'Dashboard' }
       ],
+
+      loading: false,
     }
   },
 
@@ -103,6 +136,8 @@ export default {
       
     },
   },
+
+
 };
 </script>
 

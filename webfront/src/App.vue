@@ -20,8 +20,8 @@
 <template>
   <v-app>
     <v-main>
-
-      <FormInscription/>
+      <router-view/>
+      <!--FormInscription/>-->
     </v-main>
   </v-app>
 </template>
