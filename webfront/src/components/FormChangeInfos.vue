@@ -1,6 +1,5 @@
 <!-- src/components/Form.vue -->
 <script>
-import bcrypt from 'bcryptjs';
 import { useFormStore } from '@/stores/formStore';
 
 export default {
@@ -24,6 +23,7 @@ export default {
   // created() {
   //   this.rules.verifPassword= v => this.modelPassword.value !== v || 'Les mots de passes doivent être identiques !'
   // },
+
   computed: {
     form() {
       return {
@@ -32,6 +32,17 @@ export default {
         password: this.password,
         verifPassword: this.verifPassword,
       };
+    },
+    // Accédez aux données du store Pinia
+    getUsername() { // Renommez cette propriété calculée
+      console.log(useFormStore().username)
+      return useFormStore().username;
+    },
+    getEmail() { // Renommez cette propriété calculée
+      return useFormStore().email;
+    },
+    getPassword() { // Renommez cette propriété calculée
+      return useFormStore().password;
     },
   },
   methods: {
@@ -44,17 +55,14 @@ export default {
       this.$refs.password.value = '';
       this.$refs.verifPassword.value = '';
     },
-    async submit() {
+    submit() {
       if (this.$refs.password.value !== this.$refs.verifPassword.value) {
         return
       }
       else {
-        const hashedPassword = await bcrypt.hash(this.$refs.password.value, 10);
         useFormStore().setUsername(this.$refs.username.value);
         useFormStore().setEmail(this.$refs.mail.value);
-        useFormStore().setPassword(hashedPassword); // Stocker le mot de passe haché
-        useFormStore().logUsername();
-
+        useFormStore().setPassword(this.$refs.password.value);
         console.log(this.formValid)
       }
     },
@@ -71,21 +79,21 @@ export default {
         md="8"
         lg="6"
     >
-      <v-card ref="form" id="formInscription">
+      <v-card ref="form" id="formChangeInfos">
         <v-form v-model="formValid">
           <v-card-text class="text-center">
 
             <div>
-              <h1 style="padding: 20px; margin-bottom: 20px; color: white; margin-top: 20px">INSCRIPTION</h1>
+              <h1 style="padding: 20px; margin-bottom: 20px; color: white; margin-top: 20px">MODIFIER LES INFORMATIONS</h1>
             </div>
             <v-text-field
-              ref="username"
-              v-model="username"
-              :rules="[v => !!v || 'Ce champ est requis !!']"
-              label="Nom d'utilisateur"
-              placeholder="Entrez votre nom d'utilisateur"
-              required
-              class="custom-background elevation-5"></v-text-field>
+                ref="username"
+                v-model="username"
+                :rules="[v => !!v || 'Ce champ est requis !!']"
+                label="Nom d'utilisateur"
+                placeholder="Entrez votre nouveau nom d'utilisateur"
+                required
+                class="custom-background elevation-5">{{ getUsername }} => </v-text-field>
             <v-text-field
                 ref="mail"
                 v-model="mail"
@@ -94,7 +102,7 @@ export default {
                 placeholder="Entrez votre e-mail"
                 required
                 class="custom-background elevation-5"
-            ></v-text-field>
+            >{{ getEmail }} => </v-text-field>
             <v-text-field
                 ref="password"
                 v-model="modelPassword"
@@ -122,35 +130,27 @@ export default {
                 @click:append="show2 = !show2"
                 class="custom-background elevation-5"
             ></v-text-field>
-        </v-card-text>
-        <v-card-actions class="justify-center mb-8">
-          <v-btn
-              rounded="lg"
-              color="primary"
-              style="background-color: white"
-              variant="text"
-              :disabled="!formValid"
-              @click="submit"
-          >
-            S'inscrire
-          </v-btn>
+          </v-card-text>
+          <v-card-actions class="justify-center mb-8">
+            <v-btn
+                rounded="lg"
+                color="primary"
+                style="background-color: white"
+                variant="text"
+                :disabled="!formValid"
+                @click="submit"
+            >
+              S'inscrire
+            </v-btn>
 
-          <v-btn
-              style="color: white"
-              rounded="lg"
-              to="/"
-              variant="text">
-            Se connecter
-          </v-btn>
-
-<!--          <v-btn-->
-<!--              style="color: white"-->
-<!--              rounded="lg"-->
-<!--              to="/FormChangeInfos"-->
-<!--              variant="text">-->
-<!--            MODIFIER INFOS-->
-<!--          </v-btn>-->
-        </v-card-actions>
+            <v-btn
+                style="color: white"
+                rounded="lg"
+                to="/"
+                variant="text">
+              Se connecter
+            </v-btn>
+          </v-card-actions>
         </v-form>
       </v-card>
     </v-col>
@@ -161,7 +161,7 @@ export default {
 
 <style scoped>
 /* Styles spécifiques au composant */
-#formInscription{
+#formChangeInfos{
   background-color: #022037;
   margin-top: 80px;
   border-radius: 20px;
@@ -170,6 +170,7 @@ export default {
 
 .custom-background{
   background-color: white;
+  //border: solid black 2px;
   margin-bottom: 20px;
   border-radius: 10px;
   padding: 5px;
@@ -186,4 +187,5 @@ body {
 v-btn{
   border-radius: 60px;
 }
+
 </style>

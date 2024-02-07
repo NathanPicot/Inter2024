@@ -1,14 +1,16 @@
 
 <script setup>
-//import { useCounterStore } from "@/stores/userStore";
-import FormInscription from '@/components/FormInscription.vue'
+
+//import FormInscription from '@/components/FormInscription.vue'
 
 
 // export default {
 //   name: 'App',
 //
+//Front
 //   components: {
-    FormInscription;
+// FormConnexion;
+    // FormInscription;
   // },
 
 // }
@@ -18,6 +20,7 @@ import FormInscription from '@/components/FormInscription.vue'
 <template>
   <v-app>
     <v-main>
+
       <FormInscription/>
     </v-main>
   </v-app>
