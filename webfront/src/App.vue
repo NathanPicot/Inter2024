@@ -1,9 +1,13 @@
 
 <script setup>
-// import { useCounterStore } from "@/stores/userStore";
-// import FormInscription from '@/components/FormInscription.vue'
-// import FormConnexion from "@/components/FormConnexion.vue";
 
+//import FormInscription from '@/components/FormInscription.vue'
+
+
+// export default {
+//   name: 'App',
+//
+//Front
 //   components: {
 // FormConnexion;
     // FormInscription;
@@ -16,8 +20,8 @@
 <template>
   <v-app>
     <v-main>
-      <router-view/>
-<!--      <FormInscription/>-->
+
+      <FormInscription/>
     </v-main>
   </v-app>
 </template>
