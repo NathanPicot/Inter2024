@@ -131,7 +131,6 @@ export default {
 
 .custom-background{
   background-color: white;
-  //border: solid black 2px;
   margin-bottom: 10px;
   border-radius: 10px;
   width: 60%;
