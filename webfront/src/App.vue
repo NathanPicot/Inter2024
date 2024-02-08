@@ -2,10 +2,10 @@
 <script setup>
 // import { useCounterStore } from "@/stores/userStore";
 // import FormInscription from '@/components/FormInscription.vue'
-import FormConnexion from "@/components/FormConnexion.vue";
+// import FormConnexion from "@/components/FormConnexion.vue";
 
 //   components: {
-FormConnexion;
+// FormConnexion;
     // FormInscription;
   // },
 
