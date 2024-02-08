@@ -2,7 +2,7 @@
 <script>
 import bcrypt from 'bcryptjs';
 import { useFormStore } from '@/stores/formStore';
-
+import axios from "axios";
 export default {
   data () {
     return {
@@ -44,19 +44,32 @@ export default {
       this.$refs.password.value = '';
       this.$refs.verifPassword.value = '';
     },
-    async submit() {
-      if (this.$refs.password.value !== this.$refs.verifPassword.value) {
-        return
-      }
-      else {
-        const hashedPassword = await bcrypt.hash(this.$refs.password.value, 10);
-        useFormStore().setUsername(this.$refs.username.value);
-        useFormStore().setEmail(this.$refs.mail.value);
-        useFormStore().setPassword(hashedPassword); // Stocker le mot de passe haché
-        useFormStore().logUsername();
 
-        console.log(this.formValid)
-      }
+   async submit() {
+    if (this.$refs.password.value !== this.$refs.verifPassword.value) {
+        return;
+    } else {
+        try {
+            const formData = {
+                username: this.username,
+                mail: this.mail,
+                password: this.modelPassword,
+                verifPassword: this.modelVerifPassword
+            };
+
+            const register = await axios.post("register", formData);
+            
+            if (register.data.error_messages) {
+                console.log(register.data.error_messages['danger']);
+            }
+        } catch (error) {
+            console.log("Caught an error during registration:", error);
+        }
+        
+        // Additional logic after successful registration
+        useFormStore().logUsername(this.username);
+        console.log(this.formValid);
+    }
     },
   },
 };

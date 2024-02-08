@@ -1,5 +1,7 @@
 <!-- src/components/Form.vue -->
 <script>
+import axios from "axios";
+import { clearAuthToken, setAuthToken } from "../helpers/auth.js";
 export default {
   data () {
     return {
@@ -28,9 +30,27 @@ export default {
     },
   },
   methods: {
-    submit() {
+   async submit() {
       // Vérifiez si le champ username est un e-mail
       const isEmail = /.+@.+\..+/.test(this.username);
+      try {
+        const signin = await axios.post("login", {
+          username: this.username,
+          password: this.modelPassword
+        });
+
+        if (signin.data.error_messages){
+          console.log(signin.data.error_messages['danger'])
+        }else{
+        setAuthToken(signin.data.token);
+
+        }
+      } catch (error) {
+        console.log("Caught an error during login:", error);
+        clearAuthToken()
+      }
+
+
 
       if (isEmail) {
         console.log('Connexion avec l\'e-mail:', this.username);
@@ -125,7 +145,7 @@ export default {
 
 .custom-background{
   background-color: white;
-  //border: solid black 2px;
+  border: solid black 2px;
   margin-bottom: 20px;
   border-radius: 10px;
   padding: 5px;
