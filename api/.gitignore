@@ -8,4 +8,10 @@
 /var/
 /vendor/
 
+.DS_Store
 ###< symfony/framework-bundle ###
+
+###> squizlabs/php_codesniffer ###
+/.phpcs-cache
+/phpcs.xml
+###< squizlabs/php_codesniffer ###
