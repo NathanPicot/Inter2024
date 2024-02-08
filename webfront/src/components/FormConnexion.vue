@@ -1,5 +1,7 @@
 <!-- src/components/Form.vue -->
 <script>
+import router from '@/router';
+
 export default {
   data () {
     return {
@@ -42,6 +44,8 @@ export default {
 
       console.log('Mot de passe:', this.modelPassword);
       console.log('Form Valide:', this.formValid);
+
+      router.push("/Accueil");
     },
   },
 };
@@ -125,7 +129,6 @@ export default {
 
 .custom-background{
   background-color: white;
-  //border: solid black 2px;
   margin-bottom: 20px;
   border-radius: 10px;
   padding: 5px;

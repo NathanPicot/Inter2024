@@ -186,5 +186,4 @@ body {
 v-btn{
   border-radius: 60px;
 }
-
 </style>

@@ -140,15 +140,15 @@ export default {
                 :disabled="!formValid"
                 @click="submit"
             >
-              S'inscrire
+              Valider
             </v-btn>
 
             <v-btn
                 style="color: white"
                 rounded="lg"
-                to="/"
+                to="/Accueil"
                 variant="text">
-              Se connecter
+              Annuler
             </v-btn>
           </v-card-actions>
         </v-form>
@@ -170,7 +170,6 @@ export default {
 
 .custom-background{
   background-color: white;
-  //border: solid black 2px;
   margin-bottom: 20px;
   border-radius: 10px;
   padding: 5px;
