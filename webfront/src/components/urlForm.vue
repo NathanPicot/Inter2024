@@ -53,11 +53,9 @@
               class="custom-background elevation-5"
             ></v-text-field>
             <v-select
-              v-model="selectTools"
-              clearable
-              multiple
+              ref="selection"
               chips
-              :rules="[v => !!v || 'Veuillez sélectionner un outil !!']"
+              :rules="[v => v || 'Veuillez sélectionner un outil !!',]"
               label="Outils d'analyse"
               placeholder="Sélectionner un outil d'analyse"
               :items="tools"
@@ -68,26 +66,43 @@
               class="custom-background"
             >
             </v-select>
-          
         </v-card-text>
         <v-card-actions class="justify-center mb-8">
-          <v-btn
-              rounded="lg"
-              color="primary"
-              style="background-color: white"
-              variant="text"
-              :disabled="!formValid"
-              @click="submit"
-              :loading="loading" 
-          >
-            Analyser
-          </v-btn>
+          <v-dialog width="500">
+            <template v-slot:activator="{ props }">
+              <v-btn 
+                v-bind="props" 
+                rounded="lg"
+                variant="text"
+                style="background-color: white"
+                color="primary"
+                :disabled="!formValid"
+                @click="submit"
+              >Analyser</v-btn>
+            </template>
 
+            <template v-slot:default="{ isActive}">
+              <v-card title="Télécharger">
+                <v-card-text>
+                  Vous pouvez télécharger votre rapport
+                </v-card-text>
+                <v-card-actions>
+                  <v-btn
+
+                  >Télécharger</v-btn>
+                  <v-btn
+                    @click="isActive.value = false"
+                  >Fermer</v-btn>
+                </v-card-actions>
+              </v-card>
+            </template>
+          </v-dialog>
           <v-btn
               style="color: white"
               rounded="lg"
               variant="text"
-              @click="resetForm">
+              type="reset"
+              >
               Annuler
           </v-btn>
         </v-card-actions>
@@ -100,6 +115,7 @@
 <script>
 export default {
   data () {
+    console.log(this)
     return {
       formValid: false,
       rules: {
@@ -117,26 +133,22 @@ export default {
         { toolName: 'PhpDepreciationDetector', toolType: 'Détection des fonctions dépréciées' },
         { toolName: 'phpMetrics', toolType: 'Dashboard' }
       ],
-
-      loading: false,
     }
   },
 
   computed: {
     form() {
+      console.log(this.$refs.selection.value, this.$refs.selection)
       return {
         url: this.url,
+        selection: this.selection,
       };
     },
   },
 
   methods: {
-    resetForm() {
-      this.$refs.url.value = '';
-      
-    },
+  
   },
-
 
 };
 </script>
