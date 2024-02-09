@@ -1,27 +1,20 @@
 
 <script setup>
-
-//import FormInscription from '@/components/FormInscription.vue'
-
-
-// export default {
-//   name: 'App',
-//
-//Front
-//   components: {
-// FormConnexion;
-    // FormInscription;
-  // },
-
-// }
+import UserMenu from "@/components/UserMenu.vue";
 </script>
 
 
 <template>
   <v-app>
+    <UserMenu/>
     <v-main>
       <router-view/>
       <!--FormInscription/>-->
     </v-main>
   </v-app>
 </template>
+
+<style scoped>
+
+
+</style>

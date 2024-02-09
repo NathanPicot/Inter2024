@@ -6,6 +6,7 @@ export const useFormStore = defineStore('formInscription', {
         username: '',
         email: '',
         password: '',
+        isConnected: false,
     }),
     actions: {
         setUsername(value) {
@@ -31,6 +32,10 @@ export const useFormStore = defineStore('formInscription', {
             console.log(this.username);
             return this.username.toUpperCase();
         },
+
+        getIsConnected :(state) => {
+            return state.isConnected;
+        }
 
     }
 });
