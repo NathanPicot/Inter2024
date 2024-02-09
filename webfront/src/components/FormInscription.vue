@@ -13,7 +13,6 @@ export default {
       formValid: false,
       show1: false,
       show2: false,
-      password: 'Password',
       rules: {
         required: value => !!value || 'Required.',
         min: v => v.length >= 8 || 'Min 8 characters',
@@ -29,8 +28,8 @@ export default {
       return {
         name: this.name,
         mail: this.mail,
-        password: this.password,
-        verifPassword: this.verifPassword,
+        modelPassword: this.modelPassword,
+        modelVerifPassword: this.modelVerifPassword,
       };
     },
   },
@@ -39,10 +38,10 @@ export default {
       return this.modelPassword === this.modelVerifPassword || 'Les mots de passe doivent être identiques !';
     },
     resetForm() {
-      this.$refs.username.value = '';
-      this.$refs.mail.value = '';
-      this.$refs.password.value = '';
-      this.$refs.verifPassword.value = '';
+      this.username = '';
+      this.mail = '';
+      this.modelPassword = '';
+      this.modelVerifPassword = '';
     },
 
    async submit() {
@@ -58,14 +57,14 @@ export default {
             };
 
             const register = await axios.post("register", formData);
-            
+
             if (register.data.error_messages) {
                 console.log(register.data.error_messages['danger']);
             }
         } catch (error) {
             console.log("Caught an error during registration:", error);
         }
-        
+
         // Additional logic after successful registration
         useFormStore().logUsername(this.username);
         console.log(this.formValid);
@@ -143,6 +142,7 @@ export default {
               style="background-color: white"
               variant="text"
               :disabled="!formValid"
+              to="/Accueil"
               @click="submit"
           >
             S'inscrire
@@ -199,5 +199,4 @@ body {
 v-btn{
   border-radius: 60px;
 }
-
 </style>

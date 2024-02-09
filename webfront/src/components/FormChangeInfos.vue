@@ -12,7 +12,6 @@ export default {
       formValid: false,
       show1: false,
       show2: false,
-      password: 'Password',
       rules: {
         required: value => !!value || 'Required.',
         min: v => v.length >= 8 || 'Min 8 characters',
@@ -29,8 +28,8 @@ export default {
       return {
         name: this.name,
         mail: this.mail,
-        password: this.password,
-        verifPassword: this.verifPassword,
+        modelPassword: this.modelPassword,
+        modelVerifPassword: this.modelVerifPassword,
       };
     },
     // Accédez aux données du store Pinia
@@ -50,19 +49,19 @@ export default {
       return this.modelPassword === this.modelVerifPassword || 'Les mots de passe doivent être identiques !';
     },
     resetForm() {
-      this.$refs.username.value = '';
-      this.$refs.mail.value = '';
-      this.$refs.password.value = '';
-      this.$refs.verifPassword.value = '';
+      this.username= '';
+      this.mail = '';
+      this.modelPassword = '';
+      this.modelVerifPassword = '';
     },
     submit() {
-      if (this.$refs.password.value !== this.$refs.verifPassword.value) {
+      if (this.modelPassword !== this.modelVerifPassword) {
         return
       }
       else {
-        useFormStore().setUsername(this.$refs.username.value);
-        useFormStore().setEmail(this.$refs.mail.value);
-        useFormStore().setPassword(this.$refs.password.value);
+        useFormStore().setUsername(this.username);
+        useFormStore().setEmail(this.mail);
+        useFormStore().setPassword(this.modelPassword);
         console.log(this.formValid)
       }
     },
@@ -140,15 +139,15 @@ export default {
                 :disabled="!formValid"
                 @click="submit"
             >
-              S'inscrire
+              Valider
             </v-btn>
 
             <v-btn
                 style="color: white"
                 rounded="lg"
-                to="/"
+                to="/Accueil"
                 variant="text">
-              Se connecter
+              Annuler
             </v-btn>
           </v-card-actions>
         </v-form>
@@ -170,7 +169,6 @@ export default {
 
 .custom-background{
   background-color: white;
-  //border: solid black 2px;
   margin-bottom: 20px;
   border-radius: 10px;
   padding: 5px;
