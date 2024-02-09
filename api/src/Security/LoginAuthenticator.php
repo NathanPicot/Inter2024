@@ -2,6 +2,7 @@
 
 namespace App\Security;
 
+use SpomkyLabs\Pki\ASN1\Type\Primitive\NullType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -11,11 +12,15 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 
 class LoginAuthenticator extends AbstractAuthenticator
 {
+
+    public const LOGIN_ROUTE = 'app_login';
     public function supports(Request $request): ?bool
     {
-        // TODO: Implement supports() method.
+        return self::LOGIN_ROUTE === $request->attributes->get('_route')
+        && $request->isMethod('POST');
     }
 
+    
     public function authenticate(Request $request): Passport
     {
         // TODO: Implement authenticate() method.

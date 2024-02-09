@@ -113,7 +113,9 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
+  
   data () {
     console.log(this)
     return {
@@ -127,11 +129,12 @@ export default {
       },
       selectTools: [],
       tools: [
-        { toolName: 'PHP_CodeSniffer', toolType: 'Détection des erreurs' },
+        { toolName: 'run-phpcs', toolType: 'Détection des erreurs' },
         { toolName: 'php-reaper', toolType: 'Détection des Injections' },
-        { toolName: 'phpmnd', toolType: 'Détection de nombres magiques' },
-        { toolName: 'PhpDepreciationDetector', toolType: 'Détection des fonctions dépréciées' },
-        { toolName: 'phpMetrics', toolType: 'Dashboard' }
+        { toolName: 'magic-number-scan', toolType: 'Détection de nombres magiques' },
+        { toolName: 'deprecation-detector', toolType: 'Détection des fonctions dépréciées' },
+        // { toolName: 'eir', toolType: "Outil d'analyse statique de la vulnérabilité pour PHP" },
+        { toolName: 'phpmetrics', toolType: 'Dashboard' },
       ],
     }
   },
@@ -147,7 +150,30 @@ export default {
   },
 
   methods: {
-  
+     async submit() {
+      console.log(this.$refs.selection.value)
+      const response = await axios.post(this.$refs.selection.value, {
+        repoUrl: this.$refs.url.value,
+        selection: this.$refs.selection.value,
+      });
+      console.log(response.data)
+         // Create a Blob from the response data
+    const blob = new Blob([JSON.stringify(response.data)], { type: 'application/json' });
+    const url = window.URL.createObjectURL(blob);
+    
+    // Create a temporary link element to trigger the download
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'output.json');
+    
+    // Append the link to the body and trigger the click event
+    document.body.appendChild(link);
+    link.click();
+    
+    // Clean up
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(link);
+    },
   },
 
 };

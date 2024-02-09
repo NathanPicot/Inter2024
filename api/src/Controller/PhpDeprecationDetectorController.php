@@ -11,7 +11,7 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class PhpDeprecationDetectorController extends AbstractController
 {
-    #[Route('/php/deprecation-detector', name: 'app_php_deprecation_detector')]
+    #[Route('/api/deprecation-detector', name: 'app_php_deprecation_detector')]
     public function index(): JsonResponse
     {
         // Clone the GitHub repository
@@ -24,6 +24,14 @@ class PhpDeprecationDetectorController extends AbstractController
 
         // Check if cloning was successful
         if (!$cloneProcess->isSuccessful()) {
+                            // Delete the cloned repository
+        $filesystem = new Filesystem();
+        try {
+            $repoPath = str_replace('/', '\\', $repoPath);
+            $filesystem->remove($repoPath);
+        } catch (\Exception $e) {
+            // Handle exception
+        }
             return $this->json([
                 'error' =>  'Failed to clone the GitHub repository ' ,
             ]);
@@ -53,6 +61,7 @@ class PhpDeprecationDetectorController extends AbstractController
                 // Delete the cloned repository
         $filesystem = new Filesystem();
         try {
+            $repoPath = str_replace('/', '\\', $repoPath);
             $filesystem->remove($repoPath);
         } catch (\Exception $e) {
             // Handle exception

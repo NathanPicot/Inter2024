@@ -7,25 +7,31 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 
 class EirController extends AbstractController
 {
-    #[Route('/eir', name: 'app_eir_scan')]
-    public function index(): JsonResponse
+    #[Route('/api/eir', name: 'app_eir_scan')]
+    public function index(Request $request): Response
     {
-        // Change this to the path where you downloaded Eir project
-        $eirPath = '/path/to/eir';
+        // // Change this to the path where you downloaded Eir project
+        // $eirPath = '/path/to/eir';
 
-        // Check if Eir directory exists
-        if (!is_dir($eirPath)) {
-            return $this->json([
-                'error' => 'Eir directory does not exist.',
-            ]);
-        }
+        // // Check if Eir directory exists
+        // if (!is_dir($eirPath)) {
+        //     return $this->json([
+        //         'error' => 'Eir directory does not exist.',
+        //     ]);
+        // }
 
         // Clone the GitHub repository
-        $repoUrl = 'https://github.com/Alex101111/NUH-Backend-PHP.git'; // Replace with the URL of the GitHub repository
-        $repoPath = sys_get_temp_dir() . '/eir_repo'; // Temporary directory to clone the repository
+        // Clone the GitHub repository
+        $credentials = json_decode($request->getContent(), true);
+
+        // Clone the GitHub repository
+        $repoUrl = $credentials['repoUrl'];
+        $repoPath = sys_get_temp_dir() . '/repo'; // Temporary directory to clone the repository
 
         // Clone the repository
         $cloneProcess = new Process(['git', 'clone', $repoUrl, $repoPath]);
@@ -34,6 +40,10 @@ class EirController extends AbstractController
         try {
             $cloneProcess->mustRun();
         } catch (ProcessFailedException $exception) {
+                     // Delete the cloned repository
+                     $filesystem = new Filesystem();
+                     $filesystem->remove($repoPath);
+         
             return $this->json([
                 'error' => 'Failed to clone the GitHub repository: ' . $exception->getMessage(),
             ]);
@@ -53,10 +63,11 @@ class EirController extends AbstractController
             $filesystem = new Filesystem();
             $filesystem->remove($repoPath);
 
-            return $this->json([
-                'message' => 'Eir scan completed successfully.',
-                'output' => $output,
-            ]);
+            // Create a downloadable JSON file
+            $response = new Response($output);
+            $response->headers->set('Content-Type', 'application/json');
+            $response->headers->set('Content-Disposition', 'attachment; filename="eir_output.json"');
+            return $response;
         } catch (ProcessFailedException $exception) {
             // Handle failed command execution
             return $this->json([

@@ -7,15 +7,19 @@ use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Process\Process;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\Response;
 
 class PhpReaperController extends AbstractController
 {
-    #[Route('/php/reaper', name: 'app_php_reaper')]
-    public function index(): JsonResponse
+    #[Route('/api/php-reaper', name: 'app_php_reaper', methods: ['POST'])]
+    public function index(Request $request): Response
     {
+        $credentials = json_decode($request->getContent(), true);
+
         // Clone the GitHub repository
-        $repoUrl = 'https://github.com/Alex101111/NUH-Backend-PHP.git'; // Replace with the URL of the GitHub repository
+        $repoUrl = $credentials['repoUrl']; // Replace with the URL of the GitHub repository
         $repoPath = sys_get_temp_dir() . '/repo'; // Temporary directory to clone the repository
         putenv('GIT_SSL_NO_VERIFY=true');
         $cloneProcess = new Process(['git', 'clone', $repoUrl, $repoPath]);
@@ -60,9 +64,16 @@ try {
 } catch (\Exception $e) {
     // Handle exception
 }
+              // Convert the multidimensional array to a JSON string
+              $jsonOutput = json_encode($phpFiles);
 
 
-        // Return results
-        return $this->json($phpFiles);
+                    // Create a downloadable JSON file
+                    $response = new Response($jsonOutput);
+                    $response->headers->set('Content-Type', 'application/json');
+                    $response->headers->set('Content-Disposition', 'attachment; filename="eir_output.json"');
+        
+                    return $response;
+
     }
 }
