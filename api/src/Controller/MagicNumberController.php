@@ -8,13 +8,19 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class MagicNumberController extends AbstractController
 {
-    #[Route('/magic-number-scan', name: 'app_magic_number_scan')]
-    public function index(): JsonResponse
+    #[Route('/api/magic-number-scan', name: 'app_magic_number_scan')]
+    public function index(Request $request): Response
     { // Clone the GitHub repository
-        $repoUrl = 'https://github.com/Alex101111/NUH-Backend-PHP.git'; // Replace with the URL of the GitHub repository
+        // Clone the GitHub repository
+        $credentials = json_decode($request->getContent(), true);
+
+        // Clone the GitHub repository
+        $repoUrl = $credentials['repoUrl'];
         $repoPath = sys_get_temp_dir() . '/repo'; // Temporary directory to clone the repository
         putenv('GIT_SSL_NO_VERIFY=true');
         $cloneProcess = new Process(['git', 'clone', $repoUrl, $repoPath]);
@@ -96,9 +102,15 @@ try {
         if (empty($results)) {
             return $this->json(['message' => 'No magic numbers found.']);
         }
+              // Convert the multidimensional array to a JSON string
+              $jsonOutput = json_encode($results);
 
-        // Return results
-        return $this->json($results);
+
+                    // Create a downloadable JSON file
+                    $response = new Response($jsonOutput);
+                    $response->headers->set('Content-Type', 'application/json');
+                    $response->headers->set('Content-Disposition', 'attachment; filename="eir_output.json"');
+                    return $response;
     }
     }
 

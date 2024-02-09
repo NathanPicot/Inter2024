@@ -2,6 +2,8 @@
 <script>
 import axios from "axios";
 import { clearAuthToken, setAuthToken } from "../helpers/auth.js";
+import router from '@/router';
+
 export default {
   data () {
     return {
@@ -62,6 +64,8 @@ export default {
 
       console.log('Mot de passe:', this.modelPassword);
       console.log('Form Valide:', this.formValid);
+
+      router.push("/Accueil");
     },
   },
 };

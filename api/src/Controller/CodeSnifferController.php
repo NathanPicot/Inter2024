@@ -7,16 +7,20 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Filesystem\Filesystem;
 
 class CodeSnifferController extends AbstractController
 {
-    #[Route('/run-phpcs', name: 'run_phpcs')]
-    public function runPHPCS(): JsonResponse
+    #[Route('/api/run-phpcs', name: 'run_phpcs')]
+    public function runPHPCS(Request $request): JsonResponse
     {
         // Clone the GitHub repository
-        $repoUrl = 'https://github.com/Alex101111/NUH-Backend-PHP.git'; // Replace with the URL of the GitHub repository
-        $repoPath = sys_get_temp_dir() . '/repo'; // Temporary directory to clone the repository
+        $credentials = json_decode($request->getContent(), true);
+
+        // Clone the GitHub repository
+        $repoUrl = $credentials['repoUrl'];     
+           $repoPath = sys_get_temp_dir() . '/repo'; // Temporary directory to clone the repository
         putenv('GIT_SSL_NO_VERIFY=true');
         $cloneProcess = new Process(['git', 'clone', $repoUrl, $repoPath]);
         $cloneProcess->setTimeout(300); // 5 minutes timeout
@@ -24,6 +28,13 @@ class CodeSnifferController extends AbstractController
         try {
             $cloneProcess->mustRun();
         } catch (ProcessFailedException $exception) {
+                                // Delete the cloned repository
+        $filesystem = new Filesystem();
+        try {
+            $filesystem->remove($repoPath);
+        } catch (\Exception $e) {
+            // Handle exception
+        }
             return $this->json([
                 'error' => 'Failed to clone the GitHub repository: ' . $exception->getMessage(),
             ]);
@@ -37,9 +48,17 @@ class CodeSnifferController extends AbstractController
             $phpcsProcess->mustRun();
             $phpcsOutput = $phpcsProcess->getOutput();
         } catch (ProcessFailedException $exception) {
+                                // Delete the cloned repository
+        $filesystem = new Filesystem();
+        try {
+            $filesystem->remove($repoPath);
+        } catch (\Exception $e) {
+            // Handle exception
+        }
             return $this->json([
                 'error' => 'PHP_CodeSniffer failed: ' . $exception->getMessage(),
             ]);
+
         }
 
 // Delete the cloned repository

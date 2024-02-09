@@ -1,7 +1,7 @@
 // src/store/formStore.js
 import { defineStore } from 'pinia';
 
-export const useFormStore = defineStore('form', {
+export const useFormStore = defineStore('formInscription', {
     state: () => ({
         username: '',
         email: '',
@@ -11,14 +11,14 @@ export const useFormStore = defineStore('form', {
         setUsername(value) {
             this.username = value;
         },
-        logUsername(username) {
-            console.log(username);
-        },
         setEmail(value) {
             this.email = value;
         },
         setPassword(value) {
             this.password = value;
+        },
+        logUsername() {
+            console.log(this.password);
         },
         resetForm() {
             this.username = '';
@@ -30,7 +30,7 @@ export const useFormStore = defineStore('form', {
         getUsernameUpperCase() {
             console.log(this.username);
             return this.username.toUpperCase();
+        },
 
-        }
     }
 });

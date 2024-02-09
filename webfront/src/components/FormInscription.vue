@@ -153,6 +153,14 @@ export default {
               variant="text">
             Se connecter
           </v-btn>
+
+<!--          <v-btn-->
+<!--              style="color: white"-->
+<!--              rounded="lg"-->
+<!--              to="/FormChangeInfos"-->
+<!--              variant="text">-->
+<!--            MODIFIER INFOS-->
+<!--          </v-btn>-->
         </v-card-actions>
         </v-form>
       </v-card>
@@ -173,7 +181,6 @@ export default {
 
 .custom-background{
   background-color: white;
-  //border: solid black 2px;
   margin-bottom: 20px;
   border-radius: 10px;
   padding: 5px;
@@ -190,5 +197,4 @@ body {
 v-btn{
   border-radius: 60px;
 }
-
 </style>
