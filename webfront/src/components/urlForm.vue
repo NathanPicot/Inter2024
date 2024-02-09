@@ -1,0 +1,215 @@
+<!-- src/components/Form.vue -->
+
+<template>
+  <v-row justify="center">
+    <v-col>
+      <v-menu>
+        <template v-slot:activator="{ props }">
+          <v-icon size="64" class="ma-8" v-bind="props">mdi-account-circle</v-icon>
+        </template>
+        <v-list>
+          <v-list-subheader>MENU</v-list-subheader>
+          <v-list-item 
+            prepend-icon="mdi-account"
+            to="/FormChangeInfos"
+          >
+            Mon compte
+          </v-list-item>
+          <v-list-item 
+            prepend-icon="mdi-archive"
+            to="/Mes Projets"
+          >
+            Mes projets
+          </v-list-item>
+          <v-list-item
+            prepend-icon="mdi-arrow-left-bold"
+            to="/"
+          >
+            Se déconnecter
+          </v-list-item>
+        </v-list>
+      </v-menu>
+    </v-col>
+  </v-row>
+  <v-row justify="center">
+    <v-col
+        cols="12"
+        sm="10"
+        md="8"
+        lg="6"
+    >
+      <v-card ref="form" id="urlForm">
+        <v-form v-model="formValid">
+          <v-card-text class="text-center">
+            <div>
+              <h1>ANALYSE</h1>
+            </div>
+            <v-text-field
+              ref="url"
+              :rules="[rules.required, rules.validGithubUrl]"
+              label="Repository GitHub"
+              placeholder="Saisissez une URL"
+              required
+              class="custom-background elevation-5"
+            ></v-text-field>
+            <v-select
+              ref="selection"
+              chips
+              :rules="[v => v || 'Veuillez sélectionner un outil !!',]"
+              label="Outils d'analyse"
+              placeholder="Sélectionner un outil d'analyse"
+              :items="tools"
+              item-title="toolType"
+              item-value="toolName"
+              return-object
+              required
+              class="custom-background"
+            >
+            </v-select>
+        </v-card-text>
+        <v-card-actions class="justify-center mb-8">
+          <v-dialog width="500">
+            <template v-slot:activator="{ props }">
+              <v-btn 
+                v-bind="props" 
+                rounded="lg"
+                variant="text"
+                style="background-color: white"
+                color="primary"
+                :disabled="!formValid"
+                @click="submit"
+              >Analyser</v-btn>
+            </template>
+
+            <template v-slot:default="{ isActive}">
+              <v-card title="Télécharger">
+                <v-card-text>
+                  Vous pouvez télécharger votre rapport
+                </v-card-text>
+                <v-card-actions>
+                  <v-btn
+
+                  >Télécharger</v-btn>
+                  <v-btn
+                    @click="isActive.value = false"
+                  >Fermer</v-btn>
+                </v-card-actions>
+              </v-card>
+            </template>
+          </v-dialog>
+          <v-btn
+              style="color: white"
+              rounded="lg"
+              variant="text"
+              type="reset"
+              >
+              Annuler
+          </v-btn>
+        </v-card-actions>
+        </v-form>
+      </v-card>
+    </v-col>
+  </v-row>
+</template>
+
+<script>
+import axios from "axios";
+export default {
+  
+  data () {
+    console.log(this)
+    return {
+      formValid: false,
+      rules: {
+        required: value => !!value || 'Ce champ est requis !!',
+      validGithubUrl: value => {
+        const githubUrlRegex = /^https:\/\/github\.com\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]/;
+        return githubUrlRegex.test(value) || 'Veuillez saisir une URL GitHub valide.';
+      },
+      },
+      selectTools: [],
+      tools: [
+        { toolName: 'run-phpcs', toolType: 'Détection des erreurs' },
+        { toolName: 'php-reaper', toolType: 'Détection des Injections' },
+        { toolName: 'magic-number-scan', toolType: 'Détection de nombres magiques' },
+        { toolName: 'deprecation-detector', toolType: 'Détection des fonctions dépréciées' },
+        // { toolName: 'eir', toolType: "Outil d'analyse statique de la vulnérabilité pour PHP" },
+        { toolName: 'phpmetrics', toolType: 'Dashboard' },
+      ],
+    }
+  },
+
+  computed: {
+    form() {
+      console.log(this.$refs.selection.value, this.$refs.selection)
+      return {
+        url: this.url,
+        selection: this.selection,
+      };
+    },
+  },
+
+  methods: {
+     async submit() {
+      console.log(this.$refs.selection.value)
+      const response = await axios.post(this.$refs.selection.value, {
+        repoUrl: this.$refs.url.value,
+        selection: this.$refs.selection.value,
+      });
+      console.log(response.data)
+         // Create a Blob from the response data
+    const blob = new Blob([JSON.stringify(response.data)], { type: 'application/json' });
+    const url = window.URL.createObjectURL(blob);
+    
+    // Create a temporary link element to trigger the download
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'output.json');
+    
+    // Append the link to the body and trigger the click event
+    document.body.appendChild(link);
+    link.click();
+    
+    // Clean up
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(link);
+    },
+  },
+
+};
+</script>
+
+<style scoped>
+/* Styles spécifiques au composant */
+#urlForm{
+  background-color: #022037;
+  margin-top: 80px;
+  border-radius: 20px;
+  padding: 5px;
+}
+
+.custom-background{
+  background-color: white;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  padding: 5px;
+  width: 60%;
+  margin-left: 20%;
+}
+
+body {
+  overflow-y: hidden;
+  background-color: white;
+}
+
+h1 {
+  padding: 20px; 
+  margin-top: 20px;
+  margin-bottom: 20px; 
+  color: white; 
+}
+
+v-btn{
+  border-radius: 60px;
+}
+</style>

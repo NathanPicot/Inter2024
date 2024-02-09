@@ -1,23 +1,27 @@
+
+<script setup>
+
+//import FormInscription from '@/components/FormInscription.vue'
+
+
+// export default {
+//   name: 'App',
+//
+//Front
+//   components: {
+// FormConnexion;
+    // FormInscription;
+  // },
+
+// }
+</script>
+
+
 <template>
   <v-app>
     <v-main>
-      <HelloWorld/>
+      <router-view/>
+      <!--FormInscription/>-->
     </v-main>
   </v-app>
 </template>
-
-<script>
-import HelloWorld from './components/HelloWorld.vue'
-
-export default {
-  name: 'App',
-
-  components: {
-    HelloWorld,
-  },
-
-  data: () => ({
-    //
-  }),
-}
-</script>
