@@ -1,7 +1,7 @@
 <!-- src/components/Form.vue -->
 <script>
-import bcrypt from 'bcryptjs';
-import { useFormStore } from '@/stores/formStore';
+//import bcrypt from 'bcryptjs';
+//import { useFormStore } from '@/stores/formStore';
 import axios from "axios";
 export default {
   data () {
@@ -65,9 +65,6 @@ export default {
             console.log("Caught an error during registration:", error);
         }
 
-        // Additional logic after successful registration
-        useFormStore().logUsername(this.username);
-        console.log(this.formValid);
     }
     },
   },
