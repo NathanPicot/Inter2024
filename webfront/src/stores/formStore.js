@@ -5,25 +5,24 @@ export const useFormStore = defineStore('formInscription', {
     state: () => ({
         username: '',
         email: '',
-        password: '',
+        modelPassword: '',
     }),
     actions: {
         setUsername(value) {
             this.username = value;
+            console.log(this.username)
         },
         setEmail(value) {
             this.email = value;
         },
         setPassword(value) {
-            this.password = value;
+            this.modelPassword = value;
         },
-        logUsername() {
-            console.log(this.password);
-        },
+
         resetForm() {
             this.username = '';
             this.email = '';
-            this.password = '';
+            this.modelPassword = '';
         },
     },
     getters: {

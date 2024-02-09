@@ -13,7 +13,6 @@ export default {
       formValid: false,
       show1: false,
       show2: false,
-      password: 'Password',
       rules: {
         required: value => !!value || 'Required.',
         min: v => v.length >= 8 || 'Min 8 characters',
@@ -29,8 +28,8 @@ export default {
       return {
         name: this.name,
         mail: this.mail,
-        password: this.password,
-        verifPassword: this.verifPassword,
+        modelPassword: this.modelPassword,
+        modelVerifPassword: this.modelVerifPassword,
       };
     },
   },
@@ -39,24 +38,19 @@ export default {
       return this.modelPassword === this.modelVerifPassword || 'Les mots de passe doivent être identiques !';
     },
     resetForm() {
-      this.$refs.username.value = '';
-      this.$refs.mail.value = '';
-      this.$refs.password.value = '';
-      this.$refs.verifPassword.value = '';
+      this.username = '';
+      this.mail = '';
+      this.modelPassword = '';
+      this.modelVerifPassword = '';
     },
     async submit() {
-      if (this.$refs.password.value !== this.$refs.verifPassword.value) {
-        return
-      }
-      else {
-        const hashedPassword = await bcrypt.hash(this.$refs.password.value, 10);
-        useFormStore().setUsername(this.$refs.username.value);
-        useFormStore().setEmail(this.$refs.mail.value);
+        console.log(this.username);
+        const hashedPassword = await bcrypt.hash(this.modelPassword, 10);
+        useFormStore().setUsername(this.username);
+        useFormStore().setEmail(this.mail);
         useFormStore().setPassword(hashedPassword); // Stocker le mot de passe haché
-        useFormStore().logUsername();
 
-        console.log(this.formValid)
-      }
+        // console.log(this.formValid)
     },
   },
 };
@@ -130,6 +124,7 @@ export default {
               style="background-color: white"
               variant="text"
               :disabled="!formValid"
+              to="/Accueil"
               @click="submit"
           >
             S'inscrire
