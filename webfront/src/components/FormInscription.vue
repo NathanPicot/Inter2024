@@ -43,6 +43,10 @@ export default {
       this.$refs.password.value = '';
       this.$refs.verifPassword.value = '';
     },
+<<<<<<< HEAD
+=======
+
+>>>>>>> e4f0182f2f45a0dcf773045701b4ebc43c621a1d
    async submit() {
     if (this.$refs.password.value !== this.$refs.verifPassword.value) {
         return;
